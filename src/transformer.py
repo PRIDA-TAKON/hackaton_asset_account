@@ -17,9 +17,78 @@ def transform_json_to_csv(json_data: Dict[str, Any], nacc_id: int, submitter_id:
     # --- 1. Summary CSV (Train_summary structure) ---
     process_summary(json_data, nacc_id, submitter_id, summary_dir)
 
-    # --- 2. Details CSVs (Train output structure) ---
+    # --- 2. Details CSVs (Test structure) ---
+    process_doc_info(json_data, nacc_id, details_dir)
+    process_nacc_detail(json_data, nacc_id, submitter_id, details_dir)
+    process_submitter_info(json_data, submitter_id, details_dir)
+    
+    # Original asset/spouse processing (keeping for reference or if needed, but user focused on above)
     process_assets(json_data, nacc_id, submitter_id, details_dir)
     process_spouse(json_data, nacc_id, submitter_id, details_dir)
+
+def process_doc_info(json_data: Dict[str, Any], nacc_id: int, output_dir: str):
+    # Test_doc_info.csv: doc_id,doc_location_url,type_id,nacc_id
+    row = {
+        "doc_id": nacc_id,
+        "doc_location_url": None, # Not available in extraction
+        "type_id": None,
+        "nacc_id": nacc_id
+    }
+    save_to_csv([row], os.path.join(output_dir, "Test_doc_info.csv"))
+
+def process_nacc_detail(json_data: Dict[str, Any], nacc_id: int, submitter_id: int, output_dir: str):
+    # Test_nacc_detail.csv: nacc_id,title,first_name,last_name,position,submitted_case,submitted_date,disclosure_announcement_date,disclosure_start_date,disclosure_end_date,agency,date_by_submitted_case,royal_start_date,create_at,submitter_id
+    submitter = json_data.get("submitter", {})
+    doc_info = json_data.get("document_info", {})
+    
+    row = {
+        "nacc_id": nacc_id,
+        "title": submitter.get("title"),
+        "first_name": submitter.get("first_name"),
+        "last_name": submitter.get("last_name"),
+        "position": submitter.get("position"),
+        "submitted_case": None, # e.g. "กรณีเข้ารับตำแหน่ง" - AI might extract this if added to prompt
+        "submitted_date": doc_info.get("submitted_date"),
+        "disclosure_announcement_date": None,
+        "disclosure_start_date": doc_info.get("disclosure_date"),
+        "disclosure_end_date": None,
+        "agency": submitter.get("agency"),
+        "date_by_submitted_case": None,
+        "royal_start_date": None,
+        "create_at": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "submitter_id": submitter_id
+    }
+    save_to_csv([row], os.path.join(output_dir, "Test_nacc_detail.csv"))
+
+def process_submitter_info(json_data: Dict[str, Any], submitter_id: int, output_dir: str):
+    # Test_submitter_info.csv: submitter_id,title,first_name,last_name,title_en,first_name_en,last_name_en,age,status,status_date,status_month,status_year,sub_district,district,province,post_code,phone_number,mobile_number,email,latest_submitted_date
+    submitter = json_data.get("submitter", {})
+    address = submitter.get("address", {})
+    doc_info = json_data.get("document_info", {})
+    
+    row = {
+        "submitter_id": submitter_id,
+        "title": submitter.get("title"),
+        "first_name": submitter.get("first_name"),
+        "last_name": submitter.get("last_name"),
+        "title_en": None,
+        "first_name_en": None,
+        "last_name_en": None,
+        "age": submitter.get("age"),
+        "status": submitter.get("marital_status"),
+        "status_date": None,
+        "status_month": None,
+        "status_year": None,
+        "sub_district": address.get("sub_district"),
+        "district": address.get("district"),
+        "province": address.get("province"),
+        "post_code": address.get("post_code"),
+        "phone_number": None,
+        "mobile_number": None,
+        "email": None,
+        "latest_submitted_date": doc_info.get("submitted_date")
+    }
+    save_to_csv([row], os.path.join(output_dir, "Test_submitter_info.csv"))
 
 def process_summary(json_data: Dict[str, Any], nacc_id: int, submitter_id: int, output_dir: str):
     submitter = json_data.get("submitter", {})
@@ -104,7 +173,7 @@ def process_summary(json_data: Dict[str, Any], nacc_id: int, submitter_id: int, 
         "relative_count": None,
         "relative_has_death_flag": None
     }
-    save_to_csv([summary_row], os.path.join(output_dir, "summary.csv"))
+    save_to_csv([summary_row], os.path.join(output_dir, "Train_summary.csv"))
 
 def process_assets(json_data: Dict[str, Any], nacc_id: int, submitter_id: int, output_dir: str):
     assets = json_data.get("assets", [])
