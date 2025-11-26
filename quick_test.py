@@ -6,7 +6,7 @@ import json
 
 def quick_test():
     # Specific PDF path provided by user
-    test_pdf = r"C:\Users\takon\OneDrive\Desktop\da\11_hackaton_บัญชีทรัพย์สิน\hack-the-assetdeclaration-data\test phase 1\test phase 1 input\Test_pdf\pdf\เกื้อกูล_ด่านชัยวิจิตร_สมาชิกสภาผู้แทนราษฎร_(ส.ส.)_กรณีพ้นจากตำแหน่ง_12_มิ.ย._2566.pdf"
+    test_pdf = r"C:\Users\takon\OneDrive\Desktop\da\hack-the-assetdeclaration-data\test phase 1\test phase 1 input\Test_pdf\pdf\เกื้อกูล_ด่านชัยวิจิตร_สมาชิกสภาผู้แทนราษฎร_(ส.ส.)_กรณีพ้นจากตำแหน่ง_12_มิ.ย._2566.pdf"
     
     if not os.path.exists(test_pdf):
         print(f"File not found: {test_pdf}")

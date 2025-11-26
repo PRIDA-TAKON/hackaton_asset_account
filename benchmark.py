@@ -10,7 +10,7 @@ def run_benchmark(limit=3):
     """
     Runs benchmark on a subset of training data.
     """
-    base_dir = r"C:\Users\takon\OneDrive\Desktop\da\11_hackaton_บัญชีทรัพย์สิน\hack-the-assetdeclaration-data\training"
+    base_dir = r"C:\Users\takon\OneDrive\Desktop\da\hack-the-assetdeclaration-data\training"
     pdf_dir = os.path.join(base_dir, "train input", "Train_pdf", "pdf") # Assuming 'pdf' subfolder exists based on previous logs
     if not os.path.exists(pdf_dir):
         pdf_dir = os.path.join(base_dir, "train input", "Train_pdf") # Fallback
