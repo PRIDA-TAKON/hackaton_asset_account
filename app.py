@@ -56,9 +56,20 @@ st.markdown("### แปลงเอกสารบัญชีทรัพย์
 # Sidebar
 with st.sidebar:
     st.header("⚙️ Configuration")
-    api_key = st.text_input("Gemini API Key", type="password", value=os.environ.get("api_gemini", ""))
-    if api_key:
-        os.environ["api_gemini"] = api_key
+    # Secure API Key Handling
+    user_api_key = st.text_input("Gemini API Key", type="password", help="Leave empty to use system key if available")
+    
+    # Resolve API Key
+    if user_api_key:
+        active_api_key = user_api_key
+    else:
+        active_api_key = os.environ.get("api_gemini")
+    
+    if active_api_key:
+        if not user_api_key:
+            st.info("Using System API Key ✅")
+    else:
+        st.warning("⚠️ No API Key found. Please provide one.")
     
     st.info("Upload PDF or provide Google Drive link to start.")
 
@@ -71,7 +82,7 @@ output_dir = "output_csv"
 with tab1:
     uploaded_files = st.file_uploader("Upload PDF Files", type=["pdf"], accept_multiple_files=True)
     if uploaded_files and st.button("Start Processing Files"):
-        if not os.environ.get("api_gemini"):
+        if not active_api_key:
             st.error("Please provide Gemini API Key!")
         else:
             progress_bar = st.progress(0)
@@ -88,7 +99,7 @@ with tab1:
                     tmp_path = tmp_file.name
                 
                 # Extract
-                data = extract_data_from_pdf(tmp_path)
+                data = extract_data_from_pdf(tmp_path, api_key=active_api_key)
                 os.remove(tmp_path)
                 
                 if data:
@@ -108,7 +119,7 @@ with tab1:
 with tab2:
     drive_link = st.text_input("Google Drive Folder Link")
     if drive_link and st.button("Download & Process from Drive"):
-        if not os.environ.get("api_gemini"):
+        if not active_api_key:
             st.error("Please provide Gemini API Key!")
         else:
             with st.spinner("Downloading files from Drive..."):
@@ -128,7 +139,7 @@ with tab2:
                     status_text.text(f"Processing {filename}...")
                     pdf_path = os.path.join(download_dir, filename)
                     
-                    data = extract_data_from_pdf(pdf_path)
+                    data = extract_data_from_pdf(pdf_path, api_key=active_api_key)
                     
                     if data:
                         nacc_id = 7777 + i

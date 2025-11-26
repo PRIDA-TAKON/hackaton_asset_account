@@ -14,10 +14,17 @@ load_dotenv()
 # Configure Gemini API
 genai.configure(api_key=os.environ.get("api_gemini"))
 
-def extract_data_from_pdf(pdf_path: str) -> Optional[Dict[str, Any]]:
+def extract_data_from_pdf(pdf_path: str, api_key: str = None) -> Optional[Dict[str, Any]]:
     """
     Extracts asset declaration data from a PDF file using Gemini API.
     """
+    if api_key:
+        genai.configure(api_key=api_key)
+    elif not os.environ.get("api_gemini"):
+        # Try to load from env if not passed and not already set
+        # (Though module level load_dotenv should have handled it, this is a safety check)
+        pass
+
     try:
         # 1. Convert PDF to Images
         print(f"Processing {pdf_path}...")
