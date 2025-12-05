@@ -8,7 +8,7 @@
 |-------------------|-------------|
 | **Python** | ภาษาโปรแกรมหลักที่ใช้ในการพัฒนา |
 | **Streamlit** | Framework สำหรับสร้าง Web Application UI อย่างรวดเร็ว |
-| **Google Gemini API** | AI Model (Gemini 1.5 Flash/Pro) สำหรับอ่านและสกัดข้อมูลจากเอกสาร PDF |
+| **Google Gemini API** | AI Model (Gemini 2.5 Flash) สำหรับอ่านและสกัดข้อมูลจากเอกสาร PDF |
 | **pdf2image** | แปลงไฟล์ PDF เป็นรูปภาพเพื่อส่งให้ AI ประมวลผล (ต้องใช้ Poppler) |
 | **Pandas** | จัดการและประมวลผลข้อมูลในรูปแบบตาราง (DataFrame) และส่งออกเป็น CSV |
 | **Pydantic** | (Optional) ใช้สำหรับกำหนดโครงสร้างข้อมูล (Data Validation) |
@@ -27,3 +27,4 @@
 2. **Test_doc_info.csv**: ข้อมูลอ้างอิงเอกสารและ ID
 3. **Test_nacc_detail.csv**: รายละเอียดการยื่นบัญชีต่อ ป.ป.ช.
 4. **Test_submitter_info.csv**: ข้อมูลส่วนตัวละเอียดของผู้ยื่น
+5. **token_usage_report.csv**: รายงานสรุปการใช้งาน Token และจำนวนหน้าของแต่ละไฟล์

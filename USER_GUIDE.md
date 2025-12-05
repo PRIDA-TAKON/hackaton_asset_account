@@ -45,4 +45,5 @@ streamlit run app.py
      - `Test_doc_info.csv`
      - `Test_nacc_detail.csv`
      - `Test_submitter_info.csv`
+     - `token_usage_report.csv` (รายงานการใช้ Token และจำนวนหน้า)
      - และไฟล์รายละเอียดอื่นๆ

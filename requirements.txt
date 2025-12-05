@@ -5,3 +5,4 @@ pandas
 pydantic
 python-dotenv
 gdown
+typhoon-ocr
